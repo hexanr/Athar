@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>أثر — منصة إسلامية</title>
+  <meta name="description" content="أثر — منصة إسلامية متكاملة للقرآن الكريم والأذكار والمكتبة الصوتية" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
+<nav>
+  <div class="nav-logo" id="navLogo">
+    <svg width="44" height="44" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="23" cy="23" r="22" fill="#0F3D2A"/>
+      <path d="M10 29 L10 19 Q10 17 12 17 L22 18 L22 31 L12 30 Q10 30 10 29Z" fill="#CFA020" opacity="0.9"/>
+      <path d="M36 29 L36 19 Q36 17 34 17 L24 18 L24 31 L34 30 Q36 30 36 29Z" fill="#1B6040"/>
+      <path d="M22 18 L24 18 L24 31 L22 31 Z" fill="#E8C24A"/>
+      <path d="M10 19 Q23 15 36 19" stroke="#E8C24A" stroke-width="0.6" fill="none"/>
+      <line x1="23" y1="17" x2="23" y2="8" stroke="#1B6040" stroke-width="1.4"/>
+      <path d="M23 14 C23 14 18 11 17 8 C20 8 23 11 23 14Z" fill="#1B6040"/>
+      <path d="M23 8 C23 8 21 5 22 3 C24 4 24 7 23 8Z" fill="#CFA020"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-logo-ar">أثـر</span>
+      <span class="nav-logo-en">A T H A R</span>
+    </div>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="#" data-page="home" class="active">الرئيسية</a></li>
+    <li><a href="#" data-page="quran">المصحف</a></li>
+    <li><a href="#" data-page="azkar">الأذكار</a></li>
+    <li><a href="#" data-page="audio">المكتبة الصوتية</a></li>
+  </ul>
+
+  <div class="nav-user">
+    <!-- Logged in -->
+    <div class="user-greeting" id="userGreeting">
+      <div class="user-avatar" id="userAvatarLetter">م</div>
+      <span id="userNameDisplay">محمد</span>
+      <button class="logout-btn" onclick="handleLogout()">خروج</button>
+    </div>
+    <!-- Not logged in -->
+    <div id="navLoginBtns" style="display:flex;gap:8px;">
+      <button class="nav-user-btn" onclick="openAuthModal('login')">دخول</button>
+      <button class="nav-user-btn primary" onclick="openAuthModal('register')">إنشاء حساب</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════ HOME ═══════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <section class="hero">
+    <div class="hero-bism">﴾ بسم الله الرحمن الرحيم ﴿</div>
+    <div class="hero-verse">
+      ﴿ الْمَالُ وَالْبَنُونَ زِينَةُ الْحَيَوٰةِ الدُّنْيَا ۖ
+      وَالْبَاقِيَاتُ الصَّالِحَاتُ خَيْرٌ عِندَ رَبِّكَ ثَوَابًا وَخَيْرٌ أَمَلًا ﴾
+    </div>
+    <div class="hero-ref">( سورة الكهف — ٤٦ )</div>
+  </section>
+
+  <div class="features-row">
+    <a class="feat-card" data-nav="quran">
+      <div class="feat-icon">📖</div>
+      <div class="feat-title">المصحف الإلكتروني</div>
+      <div class="feat-sub">تلاوة وتدبر</div>
+    </a>
+    <a class="feat-card" data-nav="azkar">
+      <div class="feat-icon">🌙</div>
+      <div class="feat-title">أذكار المسلم</div>
+      <div class="feat-sub">ذكر الله تعالى</div>
+    </a>
+    <a class="feat-card" data-nav="audio">
+      <div class="feat-icon">🎵</div>
+      <div class="feat-title">المكتبة الصوتية</div>
+      <div class="feat-sub">تلاوات القرآن</div>
+    </a>
+  </div>
+
+  <div class="section-wrap">
+    <div class="section-label">Q U R A N</div>
+    <h2 class="section-title">المصحف الكريم</h2>
+    <div class="gold-divider"><div class="gd-dot"></div></div>
+    <p class="section-sub">اقرأ القرآن الكريم وتدبر آياته العظيمة</p>
+
+    <div class="home-surahs">
+      <div class="hs-card" onclick="openSurah(1);navigate('quran')">
+        <div class="hs-num">١</div>
+        <div><div class="hs-name">الفاتحة</div><div class="hs-v">٧ آيات</div></div>
+      </div>
+      <div class="hs-card" onclick="openSurah(2);navigate('quran')">
+        <div class="hs-num">٢</div>
+        <div><div class="hs-name">البقرة</div><div class="hs-v">٢٨٦ آية</div></div>
+      </div>
+      <div class="hs-card" onclick="openSurah(18);navigate('quran')">
+        <div class="hs-num">١٨</div>
+        <div><div class="hs-name">الكهف</div><div class="hs-v">١١٠ آيات</div></div>
+      </div>
+      <div class="hs-card" onclick="openSurah(36);navigate('quran')">
+        <div class="hs-num">٣٦</div>
+        <div><div class="hs-name">يس</div><div class="hs-v">٨٣ آية</div></div>
+      </div>
+      <div class="hs-card" onclick="openSurah(55);navigate('quran')">
+        <div class="hs-num">٥٥</div>
+        <div><div class="hs-name">الرحمن</div><div class="hs-v">٧٨ آية</div></div>
+      </div>
+      <div class="hs-card" onclick="openSurah(67);navigate('quran')">
+        <div class="hs-num">٦٧</div>
+        <div><div class="hs-name">الملك</div><div class="hs-v">٣٠ آية</div></div>
+      </div>
+      <div class="hs-card" onclick="openSurah(112);navigate('quran')">
+        <div class="hs-num">١١٢</div>
+        <div><div class="hs-name">الإخلاص</div><div class="hs-v">٤ آيات</div></div>
+      </div>
+      <div class="hs-card" onclick="openSurah(114);navigate('quran')">
+        <div class="hs-num">١١٤</div>
+        <div><div class="hs-name">الناس</div><div class="hs-v">٦ آيات</div></div>
+      </div>
+    </div>
+
+    <div style="text-align:center">
+      <button class="btn-primary" onclick="navigate('quran')">عرض كل السور الـ ١١٤ ←</button>
+    </div>
+  </div>
+
+  <div class="donate-banner">
+    <h2>تصدّق عن <span>أحبائك</span> الراحلين</h2>
+    <p>البَاقِيَاتُ الصَّالِحَاتُ — صدقة جارية تبقى أثرها إلى يوم الدين</p>
+    <button class="btn-gold" onclick="openAuthModal('register')">ابدأ رحلتك مع أثر</button>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <span class="footer-logo-ar">أثـر</span>
+        <span class="footer-logo-en">A T H A R</span>
+        <p class="footer-desc">منصة إسلامية متكاملة تهدف إلى نشر العلم والخير، تتضمن المصحف الإلكتروني بالتفسير والأذكار المأثورة والمكتبة الصوتية.</p>
+      </div>
+      <div class="footer-col">
+        <h4>خدماتنا</h4>
+        <ul>
+          <li><a onclick="navigate('quran')">المصحف الإلكتروني</a></li>
+          <li><a onclick="navigate('azkar')">أذكار المسلم</a></li>
+          <li><a onclick="navigate('audio')">المكتبة الصوتية</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>الحساب</h4>
+        <ul>
+          <li><a onclick="openAuthModal('login')">تسجيل الدخول</a></li>
+          <li><a onclick="openAuthModal('register')">إنشاء حساب</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      جميع الحقوق محفوظة © ٢٠٢٥ أثر — منصة إسلامية &nbsp;|&nbsp; البيانات القرآنية من alquran.cloud
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════ QURAN PAGE ═══════════════════════════ -->
+<div id="page-quran" class="page">
+  <div id="surahListView">
+    <div class="page-header">
+      <h1>المصحف الإلكتروني</h1>
+      <p>جميع سور القرآن الكريم — ١١٤ سورة</p>
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="surahSearch" placeholder="ابحث بالاسم أو الرقم..." oninput="filterSurahs()" autocomplete="off" />
+      </div>
+    </div>
+    <div class="surahs-grid" id="surahsGrid"></div>
+  </div>
+
+  <div id="ayatView" class="ayat-view">
+    <div class="ayat-top-bar">
+      <button class="back-btn" onclick="backToSurahList()">← رجوع للسور</button>
+      <div style="text-align:center">
+        <div class="ayat-surah-title" id="ayatSurahName">الفاتحة</div>
+        <div class="ayat-surah-meta" id="ayatSurahMeta">مكية · ٧ آيات</div>
+      </div>
+      <div style="width:90px"></div><!-- spacer for centering -->
+    </div>
+    <div class="bismillah-display" id="bismillahLine">
+      بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+    </div>
+    <div class="ayat-list-container" id="ayatListContainer"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ AZKAR PAGE ═══════════════════════════ -->
+<div id="page-azkar" class="page">
+  <div class="page-header">
+    <h1>أذكار المسلم</h1>
+    <p>أذكار مأثورة عن النبي ﷺ — مع عداد تفاعلي</p>
+  </div>
+
+  <div class="azkar-tabs-bar">
+    <button class="az-tab active" data-cat="sabah">🌅 أذكار الصباح</button>
+    <button class="az-tab" data-cat="masaa">🌆 أذكار المساء</button>
+    <button class="az-tab" data-cat="nawm">🌙 أذكار النوم</button>
+    <button class="az-tab" data-cat="adiya">🤲 أدعية مأثورة</button>
+  </div>
+
+  <div class="azkar-grid" id="azkarGrid"></div>
+</div>
+
+<!-- ═══════════════════════════ AUDIO PAGE ═══════════════════════════ -->
+<div id="page-audio" class="page">
+  <div class="page-header">
+    <h1>المكتبة الصوتية</h1>
+    <p>تلاوات القرآن الكريم بأصوات كبار القراء</p>
+  </div>
+
+  <div style="padding:16px 40px 0; text-align:center">
+    <p style="color:var(--tu); font-size:14px;">اختر قارئاً للاستماع إلى القرآن الكريم</p>
+    <p style="color:var(--tu); font-size:12px; margin-top:4px;">
+      يتم تشغيل السورة المفتوحة في المصحف، أو سورة الفاتحة افتراضياً
+    </p>
+  </div>
+
+  <div class="reciters-grid" id="recitersGrid"></div>
+
+  <!-- Audio Player -->
+  <div class="player-bar">
+    <div class="player-top">
+      <div>
+        <div class="player-title" id="playerTitle">اختر قارئاً للبدء</div>
+        <div class="player-sub" id="playerSub">المكتبة الصوتية — أثر</div>
+      </div>
+      <div class="player-time" id="playerTime"></div>
+    </div>
+    <div class="progress-track" id="progressTrack">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="player-controls">
+      <button class="pc-btn" onclick="skipAudio(-15)" title="١٥ ثانية للخلف">⏮</button>
+      <button class="pc-btn play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+      <button class="pc-btn" onclick="skipAudio(15)" title="١٥ ثانية للأمام">⏭</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ AUTH MODAL ═══════════════════════════ -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeAuthModal()">✕</button>
+
+    <div class="modal-logo">
+      <span>أثـر</span>
+      <small>A T H A R</small>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login" onclick="switchAuthTab('login')">تسجيل الدخول</button>
+      <button class="auth-tab" data-tab="register" onclick="switchAuthTab('register')">إنشاء حساب</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div class="auth-form active" id="form-login">
+      <div class="form-group">
+        <label class="form-label">البريد الإلكتروني</label>
+        <input type="email" class="form-input" id="loginEmail" placeholder="example@email.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">كلمة المرور</label>
+        <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" />
+      </div>
+      <p id="loginError" style="color:#c0392b; font-size:12px; min-height:18px; margin-bottom:6px;"></p>
+      <button class="submit-btn" onclick="handleLogin()">دخول</button>
+      <p class="forgot-link">نسيت كلمة المرور؟</p>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div class="auth-form" id="form-register">
+      <div class="form-group">
+        <label class="form-label">الاسم الكامل</label>
+        <input type="text" class="form-input" id="regName" placeholder="محمد أحمد" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">البريد الإلكتروني</label>
+        <input type="email" class="form-input" id="regEmail" placeholder="example@email.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">كلمة المرور</label>
+        <input type="password" class="form-input" id="regPassword" placeholder="٦ أحرف على الأقل" />
+      </div>
+      <p id="registerError" style="color:#c0392b; font-size:12px; min-height:18px; margin-bottom:6px;"></p>
+      <button class="submit-btn" onclick="handleRegister()">إنشاء الحساب</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- SCRIPTS -->
+<script src="js/app.js"></script>
+
+</body>
+</html>
