@@ -855,3 +855,15 @@ footer { margin-top: 24px; }
 }
 [data-theme="dark"] nav, [data-theme="dark"] .ayat-top-bar, [data-theme="dark"] .player-bar { background: rgba(8,20,14,0.9); }
 [data-theme="dark"] .page-header { background: linear-gradient(180deg, #0b2518, #08160f); }
+
+/* inline SVG icons: one stroke weight everywhere */
+.ic { width: 1.2em; height: 1.2em; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.22em; margin-inline: 0 .35em; flex-shrink: 0; }
+.feat-icon { color: var(--g); } .feat-icon .ic { width: 26px; height: 26px; margin: 0; stroke-width: 1.6; }
+.rc-avatar { color: var(--g); } .rc-avatar .ic { width: 22px; height: 22px; margin: 0; }
+.search-icon { display: inline-flex; align-items: center; } .search-icon .ic { width: 18px; height: 18px; margin: 0; }
+.z-btn .ic, .done-label .ic { width: 1em; height: 1em; margin: 0 0 0 .25em; }
+.z-btn.reset .ic { margin: 0; }
+.az-tab .ic { width: 1.1em; height: 1.1em; }
+[data-theme="dark"] .feat-icon, [data-theme="dark"] .rc-avatar { color: var(--gol); }
+.rc-avatar { color: var(--gol); }
+.pc-btn .ic { width: 22px; height: 22px; }

@@ -63,17 +63,17 @@
 
   <div class="features-row">
     <a class="feat-card" data-nav="quran" href="#/quran" role="button">
-      <div class="feat-icon">📖</div>
+      <div class="feat-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
       <div class="feat-title">المصحف الإلكتروني</div>
       <div class="feat-sub">تلاوة وتدبر</div>
     </a>
     <a class="feat-card" data-nav="azkar" href="#/azkar" role="button">
-      <div class="feat-icon">🌙</div>
+      <div class="feat-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></div>
       <div class="feat-title">أذكار المسلم</div>
       <div class="feat-sub">ذكر الله تعالى</div>
     </a>
     <a class="feat-card" data-nav="audio" href="#/audio" role="button">
-      <div class="feat-icon">🎵</div>
+      <div class="feat-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg></div>
       <div class="feat-title">المكتبة الصوتية</div>
       <div class="feat-sub">تلاوات القرآن</div>
     </a>
@@ -154,7 +154,7 @@
       <h1>المصحف الإلكتروني</h1>
       <p>جميع سور القرآن الكريم — ١١٤ سورة</p>
       <div class="search-box">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
         <input type="text" id="surahSearch" aria-label="بحث في السور" placeholder="ابحث بالاسم أو الرقم..." oninput="filterSurahs()" autocomplete="off" />
       </div>
     </div>
@@ -185,10 +185,10 @@
   </div>
 
   <div class="azkar-tabs-bar">
-    <button class="az-tab active" data-cat="sabah">🌅 أذكار الصباح</button>
-    <button class="az-tab" data-cat="masaa">🌆 أذكار المساء</button>
-    <button class="az-tab" data-cat="nawm">🌙 أذكار النوم</button>
-    <button class="az-tab" data-cat="adiya">🤲 أدعية مأثورة</button>
+    <button class="az-tab active" data-cat="sabah"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>أذكار الصباح</button>
+    <button class="az-tab" data-cat="masaa"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 6-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>أذكار المساء</button>
+    <button class="az-tab" data-cat="nawm"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>أذكار النوم</button>
+    <button class="az-tab" data-cat="adiya"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>أدعية مأثورة</button>
   </div>
 
   <div class="azkar-grid" id="azkarGrid"></div>
@@ -222,9 +222,9 @@
       <div class="progress-fill" id="progressFill" style="width:0%"></div>
     </div>
     <div class="player-controls">
-      <button class="pc-btn" onclick="skipAudio(-15)" title="١٥ ثانية للخلف" aria-label="١٥ ثانية للخلف">⏮</button>
-      <button class="pc-btn play-btn" id="playBtn" onclick="togglePlay()" aria-label="تشغيل / إيقاف">▶</button>
-      <button class="pc-btn" onclick="skipAudio(15)" title="١٥ ثانية للأمام" aria-label="١٥ ثانية للأمام">⏭</button>
+      <button class="pc-btn" onclick="skipAudio(-15)" title="١٥ ثانية للخلف" aria-label="١٥ ثانية للخلف"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="margin:0"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
+      <button class="pc-btn play-btn" id="playBtn" onclick="togglePlay()" aria-label="تشغيل / إيقاف"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="fill:currentColor;margin:0"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5Z"/></svg></button>
+      <button class="pc-btn" onclick="skipAudio(15)" title="١٥ ثانية للأمام" aria-label="١٥ ثانية للأمام"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="margin:0"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg></button>
     </div>
   </div>
 </div>

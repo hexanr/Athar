@@ -1,3 +1,11 @@
+const ICONS = {
+  play: `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="fill:currentColor;margin:0"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5Z"/></svg>`,
+  pause: `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="fill:currentColor;margin:0"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`,
+  bm: `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>`,
+  mic: `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>`,
+  undo: `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`,
+  check: `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>`
+};
 /* ══════════════════════════════════════════════════════════════
    أثر - ATHAR Islamic Platform
    Quran API + Tafsir + Azkar Counter + Audio Player + hash routing
@@ -223,12 +231,12 @@ const AZKAR = {
    RECITERS DATA
    ══════════════════════════════════════════════════════════════ */
 const RECITERS = [
-  { name: "عبد الباسط عبد الصمد", sub: "مجوّد", icon: "🎙", ed: "ar.abdulbasitmujawwad" },
-  { name: "مشاري راشد العفاسي", sub: "المصحف المرتل", icon: "🎵", ed: "ar.alafasy" },
-  { name: "محمد صديق المنشاوي", sub: "مجوّد", icon: "🎤", ed: "ar.muhammadsiddiqalminshawimujawwad" },
-  { name: "هاني الرفاعي", sub: "تلاوة خاشعة", icon: "🌙", ed: "ar.haniarrifai" },
-  { name: "ياسر الدوسري", sub: "إمام المسجد الحرام", icon: "🕌", ed: "ar.yasseraldossari" },
-  { name: "إبراهيم الدوسري", sub: "تلاوة مرتلة", icon: "⭐", ed: "ar.ibrahimaldossari" },
+  { name: "عبد الباسط عبد الصمد", sub: "مجوّد", icon: "mic", ed: "ar.abdulbasitmujawwad" },
+  { name: "مشاري راشد العفاسي", sub: "المصحف المرتل", icon: "mic", ed: "ar.alafasy" },
+  { name: "محمد صديق المنشاوي", sub: "مجوّد", icon: "mic", ed: "ar.muhammadsiddiqalminshawimujawwad" },
+  { name: "هاني الرفاعي", sub: "تلاوة خاشعة", icon: "mic", ed: "ar.haniarrifai" },
+  { name: "ياسر الدوسري", sub: "إمام المسجد الحرام", icon: "mic", ed: "ar.yasseraldossari" },
+  { name: "إبراهيم الدوسري", sub: "تلاوة مرتلة", icon: "mic", ed: "ar.ibrahimaldossari" },
 ];
 const AUDIO_CDN = 'https://cdn.islamic.network/quran/audio-surah/128';
 
@@ -397,7 +405,7 @@ async function renderSurah(num, scrollTo) {
         </div>
         <div class="ayat-translation" lang="en" dir="ltr">${esc(a.translation)}</div>
         <div class="ayat-actions" onclick="event.stopPropagation()">
-          <button class="bm-btn ${saved ? 'saved' : ''}" onclick="saveBookmark(${num},${a.number},this)" aria-label="حفظ موضع القراءة عند الآية ${toAr(a.number)}">${saved ? '🔖 موضع القراءة' : '🔖 احفظ موضعي'}</button>
+          <button class="bm-btn ${saved ? 'saved' : ''}" onclick="saveBookmark(${num},${a.number},this)" aria-label="حفظ موضع القراءة عند الآية ${toAr(a.number)}">${saved ? ICONS.bm + ' موضع القراءة' : ICONS.bm + ' احفظ موضعي'}</button>
         </div>
         ${a.tafsir ? `<details class="ayat-tafsir" onclick="event.stopPropagation()"><summary>التفسير الميسر</summary><p>${esc(a.tafsir)}</p></details>` : ''}
       </div>`;
@@ -450,13 +458,13 @@ function renderAzkar() {
         <div class="zikr-footer">
           <div class="zikr-source">${z.src}</div>
           <div class="zikr-counter-area">
-            <button class="z-btn reset" onclick="resetZikr('${key}',${i})" title="إعادة">↺</button>
+            <button class="z-btn reset" onclick="resetZikr('${key}',${i})" title="إعادة">${ICONS.undo}</button>
             <div>
               <div class="z-count" id="zcount-${key}">${toAr(cnt)}</div>
               <div class="z-target">من ${toAr(z.rep)}</div>
             </div>
             ${done
-              ? `<span class="done-label">✓ تم</span>`
+              ? `<span class="done-label">${ICONS.check} تم</span>`
               : `<button class="z-btn inc" onclick="incZikr('${key}',${z.rep})">+</button>`
             }
           </div>
@@ -476,7 +484,7 @@ function incZikr(key, rep) {
   document.getElementById(`zpf-${key}`).style.width = pct + '%';
   if (cnt >= rep) {
     renderAzkar();
-    showToast('أحسنت! اكتملت الأذكار ✓');
+    showToast('أحسنت! اكتملت الأذكار');
   }
 }
 
@@ -504,7 +512,7 @@ function renderReciters() {
   const grid = document.getElementById('recitersGrid');
   grid.innerHTML = RECITERS.map((r, i) => `
     <button type="button" class="reciter-card ${state.audio.reciter === i ? 'active' : ''}" id="rc-${i}" onclick="selectReciter(${i})" aria-pressed="${state.audio.reciter === i}">
-      <div class="rc-avatar">${r.icon}</div>
+      <div class="rc-avatar">${ICONS.mic}</div>
       <div>
         <div class="rc-name">${r.name}</div>
         <div class="rc-sub">${r.sub}</div>
@@ -544,7 +552,7 @@ function loadAudio(reciterIdx, surahNum, autoplay) {
     el.addEventListener('ended', onAudioEnded);
     el.addEventListener('error', () => {
       state.audio.playing = false;
-      document.getElementById('playBtn').textContent = '▶';
+      document.getElementById('playBtn').innerHTML = ICONS.play;
       setPlayerError('تعذّر تحميل التلاوة. تحقق من الاتصال بالإنترنت أو جرّب قارئاً آخر.');
     });
     state.audio.element = el;
@@ -557,7 +565,7 @@ function loadAudio(reciterIdx, surahNum, autoplay) {
   if (autoplay) {
     el.play().then(() => {
       state.audio.playing = true;
-      document.getElementById('playBtn').textContent = '⏸';
+      document.getElementById('playBtn').innerHTML = ICONS.pause;
     }).catch(() => { /* the error event above reports real failures */ });
   }
 }
@@ -570,7 +578,7 @@ function onAudioTimeUpdate() {
 
 function onAudioEnded() {
   state.audio.playing = false;
-  document.getElementById('playBtn').textContent = '▶';
+  document.getElementById('playBtn').innerHTML = ICONS.play;
   updateProgressUI(0, 0, 0);
 }
 
@@ -581,11 +589,11 @@ function togglePlay() {
   if (state.audio.playing) {
     el.pause();
     state.audio.playing = false;
-    document.getElementById('playBtn').textContent = '▶';
+    document.getElementById('playBtn').innerHTML = ICONS.play;
   } else {
     el.play().then(() => {
       state.audio.playing = true;
-      document.getElementById('playBtn').textContent = '⏸';
+      document.getElementById('playBtn').innerHTML = ICONS.pause;
     }).catch(() => {});
   }
 }
@@ -593,7 +601,7 @@ function togglePlay() {
 function stopAudio() {
   if (state.audio.element) state.audio.element.pause();
   state.audio.playing = false;
-  document.getElementById('playBtn').textContent = '▶';
+  document.getElementById('playBtn').innerHTML = ICONS.play;
   updateProgressUI(0, 0, 0);
 }
 
@@ -629,9 +637,9 @@ const Bookmark = {
 
 function saveBookmark(surah, ayah, btn) {
   Bookmark.set(surah, ayah);
-  document.querySelectorAll('.bm-btn.saved').forEach(b => { b.classList.remove('saved'); b.textContent = '🔖 احفظ موضعي'; });
+  document.querySelectorAll('.bm-btn.saved').forEach(b => { b.classList.remove('saved'); b.innerHTML = ICONS.bm + ' احفظ موضعي'; });
   btn.classList.add('saved');
-  btn.textContent = '🔖 موضع القراءة';
+  btn.innerHTML = ICONS.bm + ' موضع القراءة';
   showToast('تم حفظ موضع القراءة');
 }
 
