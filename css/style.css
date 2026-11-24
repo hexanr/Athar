@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
-
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
@@ -18,6 +16,8 @@
   --tm:  #2A4030;
   --tu:  #5A7060;
   --white: #ffffff;
+  --card: #ffffff;
+  --title: #0F3D2A;
   --shadow: 0 4px 20px rgba(15,61,42,0.1);
   --shadow-lg: 0 8px 40px rgba(15,61,42,0.18);
 }
@@ -156,7 +156,7 @@ nav {
 .features-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background: white;
+  background: var(--card);
   border-top: 3px solid var(--gold);
   border-bottom: 1px solid var(--cr3);
 }
@@ -206,7 +206,7 @@ nav {
   margin-bottom: 32px;
 }
 .hs-card {
-  background: white;
+  background: var(--card);
   border: 1px solid var(--cr3);
   border-radius: 8px;
   padding: 14px 16px;
@@ -287,7 +287,7 @@ nav {
 
 .search-box {
   display: flex; align-items: center; gap: 10px;
-  background: white;
+  background: var(--card);
   border: 1px solid var(--cr3);
   border-radius: 8px;
   padding: 10px 16px;
@@ -313,7 +313,7 @@ nav {
   margin: 0 auto;
 }
 .surah-card {
-  background: white;
+  background: var(--card);
   border: 1px solid var(--cr3);
   border-radius: 10px;
   padding: 16px;
@@ -390,7 +390,7 @@ nav {
 
 .ayat-list-container { padding: 20px 40px; max-width: 900px; margin: 0 auto; }
 .ayat-item {
-  background: white;
+  background: var(--card);
   border: 1px solid var(--cr3);
   border-radius: 10px;
   padding: 22px 24px;
@@ -451,7 +451,7 @@ nav {
 .azkar-tabs-bar {
   display: flex;
   gap: 0;
-  background: white;
+  background: var(--card);
   border-bottom: 2px solid var(--cr3);
   overflow-x: auto;
   padding: 0 16px;
@@ -475,7 +475,7 @@ nav {
 .azkar-grid { display: grid; gap: 16px; padding: 28px 40px; max-width: 900px; margin: 0 auto; }
 
 .zikr-card {
-  background: white;
+  background: var(--card);
   border: 1px solid var(--cr3);
   border-top: 3px solid var(--g);
   border-radius: 10px;
@@ -537,7 +537,7 @@ nav {
   margin: 0 auto;
 }
 .reciter-card {
-  background: white;
+  background: var(--card);
   border: 1px solid var(--cr3);
   border-radius: 10px;
   padding: 24px 16px;
@@ -617,7 +617,7 @@ nav {
 }
 .modal-overlay.open { display: flex; }
 .modal-box {
-  background: white;
+  background: var(--card);
   border-radius: 16px;
   width: 420px;
   max-width: 92vw;
@@ -659,7 +659,7 @@ nav {
   font-size: 14px; cursor: pointer;
   color: var(--tu); transition: all 0.2s;
 }
-.auth-tab.active { background: white; color: var(--gd); font-weight: 700; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.auth-tab.active { background: var(--card); color: var(--gd); font-weight: 700; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 
 .auth-form { display: none; }
 .auth-form.active { display: block; }
@@ -787,4 +787,139 @@ footer {
   .feat-card { border-left: none; border-bottom: 1px solid var(--cr3); }
   .azkar-grid { padding: 16px; }
   .ayat-list-container { padding: 16px; }
+}
+
+
+/* ═══════════════════ NEW: nav toggle, theme, extras ═══════════════════ */
+.nav-toggle { display: none; background: none; border: 1px solid rgba(207,160,32,0.4); border-radius: 6px; width: 44px; height: 44px; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
+.nav-toggle span { display: block; width: 20px; height: 2px; background: var(--gol); border-radius: 2px; transition: transform .2s, opacity .2s; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.theme-toggle { background: none; border: 1px solid rgba(207,160,32,0.4); color: var(--gol); border-radius: 6px; width: 38px; height: 34px; cursor: pointer; font-size: 16px; }
+.theme-toggle:hover { background: rgba(207,160,32,0.12); }
+.ayat-top-bar { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; }
+.ayat-top-bar .back-btn { justify-self: start; }
+.ayat-bar-title { text-align: center; }
+.ayat-bar-spacer { display: block; }
+.ayat-actions { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.bm-btn { background: var(--cr2); border: 1px solid var(--cr3); color: var(--tm); border-radius: 6px; padding: 6px 12px; font-family: 'Noto Naskh Arabic', serif; font-size: 12px; cursor: pointer; min-height: 32px; }
+.bm-btn:hover { background: var(--cr3); }
+.bm-btn.saved { background: var(--gop); border-color: var(--gold); color: var(--gold); }
+.ayat-translation[lang="en"] { text-align: left; }
+.ayat-tafsir { margin-top: 10px; }
+.ayat-tafsir summary { cursor: pointer; color: var(--g); font-size: 13px; padding: 4px 0; }
+.ayat-tafsir p { margin-top: 6px; font-size: 14px; color: var(--tm); line-height: 1.9; }
+.continue-wrap { background: var(--gop); border-bottom: 1px solid var(--cr3); padding: 14px 24px; text-align: center; }
+.continue-wrap[hidden] { display: none; }
+.continue-wrap button { background: var(--g); color: #fff; border: none; border-radius: 6px; padding: 10px 22px; font-family: 'Noto Naskh Arabic', serif; font-size: 14px; cursor: pointer; min-height: 44px; }
+.continue-wrap span { margin-inline-end: 12px; color: var(--tm); font-size: 14px; }
+.demo-note { background: rgba(184,134,11,0.12); border: 1px solid rgba(184,134,11,0.35); color: #6b4f06; border-radius: 8px; padding: 8px 12px; font-size: 12px; margin-bottom: 14px; line-height: 1.6; }
+.audio-pick { padding: 20px 24px 0; text-align: center; }
+.audio-pick label { display: block; color: var(--tu); font-size: 14px; margin-bottom: 6px; }
+.audio-pick select { font-family: 'Noto Naskh Arabic', serif; font-size: 15px; padding: 10px 14px; min-height: 44px; border: 1px solid var(--cr3); border-radius: 8px; background: var(--card); color: var(--td); min-width: 220px; }
+.audio-pick p { color: var(--tu); font-size: 12px; margin-top: 8px; }
+.reciter-card { font: inherit; color: inherit; width: 100%; }
+.surah-card, .hs-card, .reciter-card, .feat-card { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid var(--gom); outline-offset: 2px; }
+.player-bar .err { color: #f1a9a0; font-size: 12px; margin-top: 8px; text-align: center; }
+
+/* ═══════════════════ DARK MODE ═══════════════════ */
+[data-theme="dark"] {
+  --cr: #0c1711; --cr2: #15251b; --cr3: #243a2d;
+  --td: #e8efe9; --tm: #c3d3c8; --tu: #93aa9b;
+  --card: #13211a; --title: #E8C24A; --gop: #2a2a14;
+  --shadow: 0 4px 20px rgba(0,0,0,0.4); --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
+}
+[data-theme="dark"] .sc-name, [data-theme="dark"] .hs-name, [data-theme="dark"] .section-title,
+[data-theme="dark"] .feat-title, [data-theme="dark"] .bismillah-display, [data-theme="dark"] .az-tab:hover,
+[data-theme="dark"] .az-tab.active, [data-theme="dark"] .modal-logo span { color: var(--gol); }
+[data-theme="dark"] .ayat-item.highlighted, [data-theme="dark"] .reciter-card.active { background: #232a14; }
+[data-theme="dark"] .zikr-card.done { background: rgba(207,160,32,0.08); }
+[data-theme="dark"] .form-input, [data-theme="dark"] .audio-pick select { background: #0f1b14; color: var(--td); }
+[data-theme="dark"] .demo-note { color: #e8c24a; }
+[data-theme="dark"] .bm-btn.saved { color: var(--gol); }
+
+/* ═══════════════════ TABLET / MOBILE ═══════════════════ */
+@media (max-width: 900px) {
+  nav { height: 60px; }
+  .nav-toggle { display: flex; order: 3; }
+  .nav-logo { order: 1; }
+  .nav-user { order: 2; margin-inline-start: auto; margin-inline-end: 10px; }
+  .nav-links {
+    display: none; position: absolute; top: 60px; inset-inline: 0;
+    flex-direction: column; gap: 0; background: var(--gd); padding: 8px 16px 14px;
+    border-top: 1px solid rgba(207,160,32,0.25); box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { font-size: 16px; padding: 14px 12px; min-height: 48px; border-bottom: none; border-right: 3px solid transparent; }
+  .nav-links a.active { border-right-color: var(--gol); border-bottom-color: transparent; }
+  .page-header { padding: 28px 20px 24px; }
+  .ayat-top-bar { padding: 14px 16px; }
+  .player-bar { padding: 14px 20px 16px; }
+  .bismillah-display { padding: 20px; font-size: 22px; }
+}
+@media (max-width: 600px) {
+  nav { padding: 0 14px; }
+  .nav-logo svg { width: 36px; height: 36px; }
+  .nav-logo-ar { font-size: 22px; }
+  .nav-user-btn, .logout-btn { min-height: 44px; padding: 6px 12px; }
+  .user-greeting span { display: none; }
+  .hero { padding: 40px 18px; min-height: 300px; }
+  .hero-verse { line-height: 2.1; }
+  .home-surahs { gap: 8px; }
+  .hs-card { padding: 12px; min-height: 56px; }
+  .section-wrap { padding: 32px 14px; }
+  .section-title { font-size: 28px; }
+  .donate-banner { padding: 40px 18px; }
+  .donate-banner h2 { font-size: 28px; }
+  .page-header h1 { font-size: 28px; }
+  .surahs-grid { gap: 8px; padding: 14px 12px; }
+  .surah-card { padding: 12px; min-height: 76px; }
+  .sc-name { font-size: 16px; }
+  .ayat-item { padding: 16px 14px; }
+  .ayat-list-container { padding: 12px; }
+  .ayat-top-bar { grid-template-columns: auto 1fr auto; padding: 12px; }
+  .ayat-surah-title { font-size: 20px; }
+  .back-btn { min-height: 44px; padding: 6px 12px; font-size: 12px; }
+  .ayat-bar-spacer { width: 0; }
+  .az-tab { padding: 14px 14px; min-height: 48px; font-size: 13px; white-space: nowrap; }
+  .azkar-grid { padding: 12px; gap: 12px; }
+  .zikr-card { padding: 16px; }
+  .zikr-footer { flex-direction: column; align-items: stretch; gap: 12px; }
+  .zikr-source { max-width: 100%; }
+  .zikr-counter-area { justify-content: space-between; }
+  .z-btn { width: 48px; height: 48px; }
+  .reciters-grid { gap: 10px; padding: 14px 12px; }
+  .reciter-card { padding: 16px 10px; min-height: 120px; }
+  .player-controls { gap: 8px; }
+  .pc-btn { min-width: 48px; min-height: 48px; }
+  .progress-track { height: 8px; }
+  .modal-box { padding: 28px 18px; }
+  .footer-bottom { font-size: 12px; }
+}
+@media (max-width: 480px) {
+  .surahs-grid { grid-template-columns: 1fr; }
+  .reciters-grid { grid-template-columns: 1fr; }
+  .reciter-card { min-height: 0; display: flex; align-items: center; gap: 12px; text-align: start; }
+  .reciter-card .rc-avatar { margin: 0; width: 48px; height: 48px; font-size: 22px; flex-shrink: 0; }
+  .features-row .feat-card { padding: 18px 16px; flex-direction: row; gap: 14px; text-align: start; }
+  .feat-icon { margin-bottom: 0; flex-shrink: 0; }
+  .hero-verse { font-size: 19px; }
+  .audio-pick select { width: 100%; min-width: 0; }
+}
+[data-theme="dark"] .rc-name, [data-theme="dark"] .zikr-text, [data-theme="dark"] .ayat-arabic { color: var(--td); }
+[data-theme="dark"] .rc-name { color: var(--gol); }
+
+/* mobile header fit */
+html, body { overflow-x: hidden; max-width: 100%; }
+@media (max-width: 600px) {
+  .nav-logo { gap: 8px; min-width: 0; }
+  .nav-logo-en { display: none; }
+  .nav-logo svg { width: 32px; height: 32px; }
+  #navLoginBtns .nav-user-btn.primary { display: none; }
+  .nav-user { gap: 6px; margin-inline-end: 8px; }
+  .nav-user-btn { padding: 6px 12px; font-size: 13px; }
+  .theme-toggle { width: 44px; height: 44px; }
+  .search-box { margin-inline: 12px; }
 }
