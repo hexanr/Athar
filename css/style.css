@@ -898,3 +898,10 @@ footer { margin-top: 24px; }
 .bm-btn.saved .ic { stroke: #B8860B; }
 .theme-toggle .ic { width: 20px; height: 20px; margin: 0; display: block; }
 .theme-toggle { display: inline-flex; align-items: center; justify-content: center; }
+
+/* PWA install button */
+.install-btn { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: 999px; border: 1px solid rgba(232,194,74,0.55); background: rgba(232,194,74,0.12); color: var(--gol); font-family: 'Noto Naskh Arabic', serif; font-size: 13px; cursor: pointer; transition: background .25s, transform .25s; }
+.install-btn[hidden] { display: none; }
+.install-btn:hover { background: rgba(232,194,74,0.22); transform: translateY(-1px); }
+.install-btn .ic { margin: 0; }
+@media (max-width: 760px) { .install-btn { width: 40px; height: 40px; padding: 0; justify-content: center; } .install-btn span { display: none; } }

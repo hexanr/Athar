@@ -750,3 +750,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+
+/* ══════════════════════════════════════════════════════════════
+   PWA: service worker, install button, offline Quran text
+   ══════════════════════════════════════════════════════════════ */
+let deferredInstall = null;
+function initPWA() {
+  const btn = document.getElementById('installBtn');
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone;
+
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredInstall = e;
+    if (btn) btn.hidden = false;
+  });
+  window.addEventListener('appinstalled', () => { deferredInstall = null; if (btn) btn.hidden = true; showToast('تم تثبيت أثر'); });
+  if (ios && btn) btn.hidden = false;
+  if (btn) btn.addEventListener('click', async () => {
+    if (deferredInstall) {
+      deferredInstall.prompt();
+      await deferredInstall.userChoice.catch(() => {});
+      deferredInstall = null; btn.hidden = true;
+    } else if (ios) {
+      showToast('من زر المشاركة اختر «إضافة إلى الشاشة الرئيسية»');
+    }
+  });
+  window.addEventListener('offline', () => showToast('أنت غير متصل. المحتوى المحفوظ متاح'));
+
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(prefetchQuran).catch(() => {});
+  }
+}
+
+// After the first visit, quietly save every surah (text, translation, tafsir) so reading works offline.
+async function prefetchQuran() {
+  if (localStorage.getItem('athar_offline_ready') === '1') return;
+  if (!navigator.onLine || (navigator.connection && navigator.connection.saveData)) return;
+  if (!navigator.serviceWorker.controller) await new Promise(r => { navigator.serviceWorker.addEventListener('controllerchange', r, { once: true }); setTimeout(r, 4000); });
+  const eds = ['quran-uthmani', 'en.sahih', 'ar.muyassar'];
+  const jobs = [`${QuranAPI.BASE}/surah`];
+  for (let n = 1; n <= 114; n++) eds.forEach(ed => jobs.push(`${QuranAPI.BASE}/surah/${n}/${ed}`));
+  let failed = 0, i = 0;
+  const worker = async () => {
+    while (i < jobs.length) {
+      const url = jobs[i++];
+      try { const r = await fetch(url); if (!r.ok) failed++; else await r.arrayBuffer(); } catch { failed++; }
+    }
+  };
+  await new Promise(r => requestIdleCallback ? requestIdleCallback(r, { timeout: 3000 }) : setTimeout(r, 1500));
+  await Promise.all([worker(), worker(), worker(), worker(), worker(), worker()]);
+  if (!failed) { localStorage.setItem('athar_offline_ready', '1'); showToast('تم تجهيز المصحف للقراءة بدون إنترنت'); }
+}
+document.addEventListener('DOMContentLoaded', initPWA);
