@@ -857,7 +857,7 @@ footer { margin-top: 24px; }
 [data-theme="dark"] .page-header { background: linear-gradient(180deg, #0b2518, #08160f); }
 
 /* inline SVG icons: one stroke weight everywhere */
-.ic { width: 1.2em; height: 1.2em; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.22em; margin-inline: 0 .35em; flex-shrink: 0; }
+.ic { vertical-align: -0.22em; margin-inline: 0 .35em; flex-shrink: 0; }
 .feat-icon { color: var(--g); } .feat-icon .ic { width: 26px; height: 26px; margin: 0; stroke-width: 1.6; }
 .rc-avatar { color: var(--g); } .rc-avatar .ic { width: 22px; height: 22px; margin: 0; }
 .search-icon { display: inline-flex; align-items: center; } .search-icon .ic { width: 18px; height: 18px; margin: 0; }
@@ -890,3 +890,11 @@ footer { margin-top: 24px; }
 .pc-btn.play-btn .ic { width: 26px; height: 26px; }
 .audio-pick p:empty { display: none; }
 @media (max-width: 480px) { .player-bar { width: calc(100% - 16px); bottom: 8px; border-radius: 22px; } .pc-btn { width: 44px; height: 44px; min-width: 44px; min-height: 44px; } .player-controls { gap: 4px; } }
+
+/* dark-mode accents; the SVG attributes already carry explicit colors */
+[data-theme="dark"] .feat-icon .ic { stroke: #E8C24A; }
+[data-theme="dark"] .search-icon .ic, [data-theme="dark"] .az-tab .ic { stroke: #A8C4B0; }
+[data-theme="dark"] .bm-btn .ic, [data-theme="dark"] .z-btn .ic { stroke: #A8C4B0; }
+.bm-btn.saved .ic { stroke: #B8860B; }
+.theme-toggle .ic { width: 20px; height: 20px; margin: 0; display: block; }
+.theme-toggle { display: inline-flex; align-items: center; justify-content: center; }
