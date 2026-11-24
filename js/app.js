@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════
    أثر - ATHAR Islamic Platform
-   Quran API + Tafsir + Azkar Counter + Audio Player + demo Auth
+   Quran API + Tafsir + Azkar Counter + Audio Player + hash routing
    ══════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -16,58 +16,6 @@ function showToast(msg, duration = 2800) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), duration);
 }
-
-/* ══════════════════════════════════════════════════════════════
-   AUTH SYSTEM  (localStorage-based, ready to swap for real API)
-   ══════════════════════════════════════════════════════════════ */
-const Auth = {
-  STORAGE_KEY: 'athar_user',
-
-  getUser() {
-    try { return JSON.parse(localStorage.getItem(this.STORAGE_KEY)); } catch { return null; }
-  },
-  setUser(u) { localStorage.setItem(this.STORAGE_KEY, JSON.stringify(u)); },
-  logout() { localStorage.removeItem(this.STORAGE_KEY); this.updateUI(); },
-
-  register(name, email, password) {
-    if (!name || !email || !password) return { ok: false, msg: 'يرجى ملء جميع الحقول' };
-    if (password.length < 6) return { ok: false, msg: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' };
-    const users = JSON.parse(localStorage.getItem('athar_users') || '[]');
-    if (users.find(u => u.email === email)) return { ok: false, msg: 'البريد الإلكتروني مسجل مسبقاً' };
-    const user = { id: Date.now(), name, email, createdAt: new Date().toISOString() };
-    users.push({ ...user, password });
-    localStorage.setItem('athar_users', JSON.stringify(users));
-    this.setUser(user);
-    this.updateUI();
-    return { ok: true };
-  },
-
-  login(email, password) {
-    if (!email || !password) return { ok: false, msg: 'يرجى ملء جميع الحقول' };
-    const users = JSON.parse(localStorage.getItem('athar_users') || '[]');
-    const found = users.find(u => u.email === email && u.password === password);
-    if (!found) return { ok: false, msg: 'البريد الإلكتروني أو كلمة المرور غير صحيحة' };
-    const user = { id: found.id, name: found.name, email: found.email };
-    this.setUser(user);
-    this.updateUI();
-    return { ok: true };
-  },
-
-  updateUI() {
-    const user = this.getUser();
-    const greeting = document.getElementById('userGreeting');
-    const loginBtns = document.getElementById('navLoginBtns');
-    if (user) {
-      greeting.classList.add('visible');
-      loginBtns.style.display = 'none';
-      document.getElementById('userNameDisplay').textContent = user.name.split(' ')[0];
-      document.getElementById('userAvatarLetter').textContent = user.name[0];
-    } else {
-      greeting.classList.remove('visible');
-      loginBtns.style.display = 'flex';
-    }
-  }
-};
 
 /* ══════════════════════════════════════════════════════════════
    QURAN API  (alquran.cloud — free, no key needed)
@@ -303,7 +251,70 @@ const state = {
 /* ══════════════════════════════════════════════════════════════
    NAVIGATION
    ══════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   SCROLL REVEAL (subtle, respects reduced-motion)
+   ══════════════════════════════════════════════════════════════ */
+const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const revealIO = (!REDUCED && 'IntersectionObserver' in window)
+  ? new IntersectionObserver(entries => entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      revealIO.unobserve(e.target);
+      // drop the helper classes once the animation is done so hover effects stay snappy
+      setTimeout(() => e.target.classList.remove('reveal', 'in'), 1100);
+    }), { threshold: 0.06, rootMargin: '0px 0px -4% 0px' })
+  : null;
+function reveal() {
+  if (!revealIO) return;
+  document.querySelectorAll('.surah-card,.hs-card,.feat-card,.zikr-card,.reciter-card,.ayat-item,.section-head,.footer-grid').forEach((el, i) => {
+    if (el.dataset.rv) return;
+    el.dataset.rv = '1';
+    el.classList.add('reveal');
+    el.style.setProperty('--d', `${(i % 8) * 45}ms`);
+    if (el.getBoundingClientRect().top < window.innerHeight) {
+      // already on screen: animate in on the next frame instead of waiting for the observer
+      requestAnimationFrame(() => requestAnimationFrame(() => { el.classList.add('in'); setTimeout(() => el.classList.remove('reveal', 'in'), 1100); }));
+    } else {
+      revealIO.observe(el);
+    }
+  });
+  // safety net: never leave content hidden if the observer does not fire
+  setTimeout(() => document.querySelectorAll('.reveal:not(.in)').forEach(el => el.classList.remove('reveal')), 4000);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ROUTER  (#/  #/quran  #/quran/18  #/quran/18/5  #/azkar  #/audio)
+   ══════════════════════════════════════════════════════════════ */
+const PAGES = ['home', 'quran', 'azkar', 'audio'];
+const PAGE_TITLES = { home: 'أثر — منصة إسلامية', quran: 'المصحف — أثر', azkar: 'الأذكار — أثر', audio: 'المكتبة الصوتية — أثر' };
+
 function navigate(page) {
+  const h = page === 'home' ? '#/' : `#/${page}`;
+  if (location.hash === h || (page === 'home' && !location.hash)) route(); else location.hash = h;
+}
+function openSurah(num, ayah) {
+  const h = `#/quran/${num}` + (ayah ? `/${ayah}` : '');
+  if (location.hash === h) route(); else location.hash = h;
+}
+function backToSurahList() { navigate('quran'); }
+
+function route() {
+  const parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
+  let page = PAGES.includes(parts[0]) ? parts[0] : 'home';
+  showPage(page);
+  if (page === 'quran') {
+    const n = parseInt(parts[1], 10);
+    if (n >= 1 && n <= 114) {
+      renderSurah(n, parseInt(parts[2], 10) || 0);
+      document.title = `سورة ${SURAHS_META[n - 1].ar} — أثر`;
+      return;
+    }
+    showSurahList();
+  }
+  document.title = PAGE_TITLES[page];
+}
+
+function showPage(page) {
   // hide all pages
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
@@ -319,6 +330,7 @@ function navigate(page) {
 
   // lazy init
   if (page === 'azkar') renderAzkar();
+  setTimeout(reveal, 0);
   if (page === 'audio') { renderAudioSurahs(); renderReciters(); }
   if (page === 'home') renderContinue();
 }
@@ -352,7 +364,7 @@ function filterSurahs() {
   ));
 }
 
-async function openSurah(num, scrollTo) {
+async function renderSurah(num, scrollTo) {
   state.currentSurah = num;
   const meta = SURAHS_META.find(s => s.n === num) || { ar: 'سورة', n: num, v: 0, t: 'makki' };
 
@@ -390,6 +402,7 @@ async function openSurah(num, scrollTo) {
         ${a.tafsir ? `<details class="ayat-tafsir" onclick="event.stopPropagation()"><summary>التفسير الميسر</summary><p>${esc(a.tafsir)}</p></details>` : ''}
       </div>`;
     }).join('');
+    reveal();
     if (scrollTo) {
       const el = document.getElementById(`ayah-${scrollTo}`);
       if (el) { el.scrollIntoView({ block: 'center' }); el.classList.add('highlighted'); }
@@ -398,7 +411,7 @@ async function openSurah(num, scrollTo) {
     container.innerHTML = `
       <div class="ayat-loading">
         <p style="color:#c0392b">تعذّر تحميل الآيات. يرجى التحقق من الاتصال بالإنترنت.</p>
-        <br><button class="btn-primary" onclick="openSurah(${num})">إعادة المحاولة</button>
+        <br><button class="btn-primary" onclick="renderSurah(${num})">إعادة المحاولة</button>
       </div>`;
   }
 
@@ -406,7 +419,7 @@ async function openSurah(num, scrollTo) {
   state.audio.surahNum = num;
 }
 
-function backToSurahList() {
+function showSurahList() {
   document.getElementById('ayatView').classList.remove('active');
   document.getElementById('surahListView').style.display = 'block';
 }
@@ -629,7 +642,7 @@ function renderContinue() {
   if (!meta) { wrap.hidden = true; return; }
   wrap.hidden = false;
   wrap.innerHTML = `<span>آخر موضع قراءة: سورة ${esc(meta.ar)}، الآية ${toAr(bm.ayah)}</span>
-    <button onclick="openSurah(${bm.surah}, ${bm.ayah}); navigate('quran')">تابع القراءة</button>`;
+    <button onclick="openSurah(${bm.surah}, ${bm.ayah})">تابع القراءة</button>`;
 }
 
 function applyTheme(t) {
@@ -654,61 +667,12 @@ function closeMenu() {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   AUTH MODAL
-   ══════════════════════════════════════════════════════════════ */
-function openAuthModal(tab = 'login') {
-  document.getElementById('authModal').classList.add('open');
-  switchAuthTab(tab);
-}
-function closeAuthModal() {
-  document.getElementById('authModal').classList.remove('open');
-}
-function switchAuthTab(tab) {
-  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-  document.querySelector(`.auth-tab[data-tab="${tab}"]`).classList.add('active');
-  document.getElementById(`form-${tab}`).classList.add('active');
-}
-
-function handleLogin() {
-  const email    = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  const result = Auth.login(email, password);
-  if (result.ok) {
-    closeAuthModal();
-    showToast(`مرحباً ${Auth.getUser().name} 🌿`);
-  } else {
-    document.getElementById('loginError').textContent = result.msg;
-  }
-}
-
-function handleRegister() {
-  const name     = document.getElementById('regName').value.trim();
-  const email    = document.getElementById('regEmail').value.trim();
-  const password = document.getElementById('regPassword').value;
-  const result = Auth.register(name, email, password);
-  if (result.ok) {
-    closeAuthModal();
-    showToast(`أهلاً بك ${name}! تم إنشاء حسابك ✓`);
-  } else {
-    document.getElementById('registerError').textContent = result.msg;
-  }
-}
-
-function handleLogout() {
-  Auth.logout();
-  showToast('تم تسجيل الخروج');
-}
-
-/* ══════════════════════════════════════════════════════════════
    INIT
    ══════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   // Render home surahs preview
   renderSurahsGrid(SURAHS_META);
 
-  // Auth state
-  Auth.updateUI();
 
   initTheme();
   renderContinue();
@@ -727,49 +691,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Open the page named in the URL hash (#quran, #azkar, #audio)
-  const hashPage = location.hash.replace('#', '');
-  if (['quran', 'azkar', 'audio'].includes(hashPage)) navigate(hashPage);
-
-  // Nav links
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      navigate(a.dataset.page);
-    });
-  });
+  // Router: first render + back/forward
+  window.addEventListener('hashchange', route);
+  route();
+  reveal();
 
   // Logo click
   document.getElementById('navLogo').addEventListener('click', () => navigate('home'));
-
-  // Home feature cards
-  document.querySelectorAll('[data-nav]').forEach(el => {
-    el.addEventListener('click', e => { e.preventDefault(); navigate(el.dataset.nav); });
-  });
 
   // Azkar tabs
   document.querySelectorAll('.az-tab').forEach(btn => {
     btn.addEventListener('click', () => switchAzkar(btn.dataset.cat));
   });
 
-  // Auth modal backdrop close
-  document.getElementById('authModal').addEventListener('click', e => {
-    if (e.target === document.getElementById('authModal')) closeAuthModal();
-  });
-
-  // Keyboard escape closes modal
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeAuthModal();
-  });
-
   // Progress track click
   document.getElementById('progressTrack')?.addEventListener('click', seekAudio);
-
-  // Enter key in login
-  document.getElementById('loginPassword')?.addEventListener('keydown', e => {
-    if (e.key === 'Enter') handleLogin();
-  });
-  document.getElementById('regPassword')?.addEventListener('keydown', e => {
-    if (e.key === 'Enter') handleRegister();
-  });
 });

@@ -36,25 +36,14 @@
   <button class="nav-toggle" id="navToggle" aria-label="القائمة" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
 
   <ul class="nav-links" id="navLinks">
-    <li><a href="#home" data-page="home" class="active">الرئيسية</a></li>
-    <li><a href="#quran" data-page="quran">المصحف</a></li>
-    <li><a href="#azkar" data-page="azkar">الأذكار</a></li>
-    <li><a href="#audio" data-page="audio">المكتبة الصوتية</a></li>
+    <li><a href="#/" data-page="home" class="active">الرئيسية</a></li>
+    <li><a href="#/quran" data-page="quran">المصحف</a></li>
+    <li><a href="#/azkar" data-page="azkar">الأذكار</a></li>
+    <li><a href="#/audio" data-page="audio">المكتبة الصوتية</a></li>
   </ul>
 
   <div class="nav-user">
     <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي" title="الوضع الليلي">🌓</button>
-    <!-- Logged in -->
-    <div class="user-greeting" id="userGreeting">
-      <div class="user-avatar" id="userAvatarLetter">م</div>
-      <span id="userNameDisplay">محمد</span>
-      <button class="logout-btn" onclick="handleLogout()" aria-label="تسجيل الخروج">خروج</button>
-    </div>
-    <!-- Not logged in -->
-    <div id="navLoginBtns" style="display:flex;gap:8px;">
-      <button class="nav-user-btn" onclick="openAuthModal('login')">دخول</button>
-      <button class="nav-user-btn primary" onclick="openAuthModal('register')">إنشاء حساب</button>
-    </div>
   </div>
 </nav>
 
@@ -73,17 +62,17 @@
   <div class="continue-wrap" id="continueWrap" hidden></div>
 
   <div class="features-row">
-    <a class="feat-card" data-nav="quran" href="#quran" role="button">
+    <a class="feat-card" data-nav="quran" href="#/quran" role="button">
       <div class="feat-icon">📖</div>
       <div class="feat-title">المصحف الإلكتروني</div>
       <div class="feat-sub">تلاوة وتدبر</div>
     </a>
-    <a class="feat-card" data-nav="azkar" href="#azkar" role="button">
+    <a class="feat-card" data-nav="azkar" href="#/azkar" role="button">
       <div class="feat-icon">🌙</div>
       <div class="feat-title">أذكار المسلم</div>
       <div class="feat-sub">ذكر الله تعالى</div>
     </a>
-    <a class="feat-card" data-nav="audio" href="#audio" role="button">
+    <a class="feat-card" data-nav="audio" href="#/audio" role="button">
       <div class="feat-icon">🎵</div>
       <div class="feat-title">المكتبة الصوتية</div>
       <div class="feat-sub">تلاوات القرآن</div>
@@ -146,16 +135,9 @@
       <div class="footer-col">
         <h4>خدماتنا</h4>
         <ul>
-          <li><a href="#quran" onclick="navigate('quran')">المصحف الإلكتروني</a></li>
-          <li><a href="#azkar" onclick="navigate('azkar')">أذكار المسلم</a></li>
-          <li><a href="#audio" onclick="navigate('audio')">المكتبة الصوتية</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>الحساب</h4>
-        <ul>
-          <li><a href="#" onclick="openAuthModal('login');return false">تسجيل الدخول</a></li>
-          <li><a href="#" onclick="openAuthModal('register');return false">إنشاء حساب</a></li>
+          <li><a href="#/quran">المصحف الإلكتروني</a></li>
+          <li><a href="#/azkar">أذكار المسلم</a></li>
+          <li><a href="#/audio">المكتبة الصوتية</a></li>
         </ul>
       </div>
     </div>
@@ -243,58 +225,6 @@
       <button class="pc-btn" onclick="skipAudio(-15)" title="١٥ ثانية للخلف" aria-label="١٥ ثانية للخلف">⏮</button>
       <button class="pc-btn play-btn" id="playBtn" onclick="togglePlay()" aria-label="تشغيل / إيقاف">▶</button>
       <button class="pc-btn" onclick="skipAudio(15)" title="١٥ ثانية للأمام" aria-label="١٥ ثانية للأمام">⏭</button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════ AUTH MODAL ═══════════════════════════ -->
-<div class="modal-overlay" id="authModal">
-  <div class="modal-box" role="dialog" aria-modal="true" aria-label="الحساب">
-    <button class="modal-close" onclick="closeAuthModal()" aria-label="إغلاق">✕</button>
-
-    <div class="modal-logo">
-      <span>أثـر</span>
-      <small>A T H A R</small>
-    </div>
-
-    <p class="demo-note">⚠️ نسخة تجريبية: الحسابات تُحفظ في متصفحك فقط. لا تستخدم كلمة مرور حقيقية.</p>
-
-    <div class="auth-tabs">
-      <button class="auth-tab active" data-tab="login" onclick="switchAuthTab('login')">تسجيل الدخول</button>
-      <button class="auth-tab" data-tab="register" onclick="switchAuthTab('register')">إنشاء حساب</button>
-    </div>
-
-    <!-- LOGIN FORM -->
-    <div class="auth-form active" id="form-login">
-      <div class="form-group">
-        <label class="form-label">البريد الإلكتروني</label>
-        <input type="email" class="form-input" id="loginEmail" placeholder="example@email.com" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">كلمة المرور</label>
-        <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" />
-      </div>
-      <p id="loginError" style="color:#c0392b; font-size:12px; min-height:18px; margin-bottom:6px;"></p>
-      <button class="submit-btn" onclick="handleLogin()">دخول</button>
-      
-    </div>
-
-    <!-- REGISTER FORM -->
-    <div class="auth-form" id="form-register">
-      <div class="form-group">
-        <label class="form-label">الاسم الكامل</label>
-        <input type="text" class="form-input" id="regName" placeholder="محمد أحمد" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">البريد الإلكتروني</label>
-        <input type="email" class="form-input" id="regEmail" placeholder="example@email.com" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">كلمة المرور</label>
-        <input type="password" class="form-input" id="regPassword" placeholder="٦ أحرف على الأقل" />
-      </div>
-      <p id="registerError" style="color:#c0392b; font-size:12px; min-height:18px; margin-bottom:6px;"></p>
-      <button class="submit-btn" onclick="handleRegister()">إنشاء الحساب</button>
     </div>
   </div>
 </div>

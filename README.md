@@ -14,7 +14,7 @@ Athar is a small Arabic, right-to-left Islamic web app built with plain HTML, CS
 - **Daily azkar.** Morning, evening and sleep azkar, and supplications. Each zikr has a counter you can tap and reset.
 - **Audio library.** Pick a surah and a reciter and it streams the full recitation from [islamic.network](https://islamic.network/developers/) (`cdn.islamic.network`). Play/pause, skip 15 seconds and a seek bar. If a file can't be loaded, the player shows an error message.
 - **Dark mode.** Follows your system setting the first time, then remembers your choice.
-- **Accounts (demo).** Register and log in. Accounts are kept in the browser's `localStorage` only. There is no server, so this is a front-end demo that is meant to be swapped for a real API later. Do not use a real password.
+- **Shareable links.** Hash routes work with the back button: `#/quran`, `#/quran/18`, `#/quran/18/3` (surah, ayah), `#/azkar`, `#/audio`. No sign-in, the site is fully public.
 
 ## Run it
 
@@ -25,7 +25,7 @@ Open `index.html` in a browser. An internet connection is needed for the Quran t
 ```
 index.html       page markup
 css/style.css    styles (light + dark theme, responsive)
-js/app.js        Quran + tafsir API calls, azkar data, reciters, audio player, bookmark, demo auth
+js/app.js        Quran + tafsir API calls, azkar data, reciters, audio player, bookmark, hash router
 screenshots/     images used in this README
 ```
 
@@ -33,4 +33,4 @@ screenshots/     images used in this README
 
 - The interface language is Arabic (`lang="ar" dir="rtl"`). English translation text is marked `lang="en" dir="ltr"`.
 - Quran text, tafsir and audio come from third-party services, so the app depends on them being online.
-- Saved data (demo accounts, reading position, theme) stays in your browser's `localStorage`.
+- Saved data (reading position, theme) stays in your browser's `localStorage`.
