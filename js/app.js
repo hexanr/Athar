@@ -231,6 +231,17 @@ const AZKAR = {
    RECITERS DATA
    ══════════════════════════════════════════════════════════════ */
 const RECITERS = [
+  { name: "نورين محمد صديق", sub: "رواية الدوري عن أبي عمرو", icon: "mic", mq: "noreen-siddiq/r1" },
+  { name: "عبد الرحمن السديس", sub: "إمام الحرم المكي", icon: "mic", mq: "abdulrahman-sudais/r1" },
+  { name: "سعود الشريم", sub: "إمام الحرم المكي", icon: "mic", mq: "saud-shuraim/r1" },
+  { name: "ماهر المعيقلي", sub: "إمام الحرم المكي", icon: "mic", mq: "maher-muaiqly/r1" },
+  { name: "علي الحذيفي", sub: "إمام المسجد النبوي", icon: "mic", mq: "ali-hudhaifi/r1" },
+  { name: "إدريس أبكر", sub: "تلاوة مرتلة", icon: "mic", mq: "idrees-abkar/r1" },
+  { name: "بندر بليلة", sub: "إمام الحرم المكي", icon: "mic", mq: "bandar-baleela/r1" },
+  { name: "أبو بكر الشاطري", sub: "تلاوة مرتلة", icon: "mic", mq: "abubakr-shatri/r1" },
+  { name: "أحمد العجمي", sub: "تلاوة مرتلة", icon: "mic", mq: "ahmad-ajmi/r1" },
+  { name: "محمود خليل الحصري", sub: "المصحف المرتل", icon: "mic", mq: "mahmoud-husary/r1" },
+  { name: "ماهر شخاشيرو", sub: "تلاوة مرتلة", icon: "mic", mq: "maher-shakhashiro/r1" },
   { name: "عبد الباسط عبد الصمد", sub: "مجوّد", icon: "mic", ed: "ar.abdulbasitmujawwad" },
   { name: "مشاري راشد العفاسي", sub: "المصحف المرتل", icon: "mic", ed: "ar.alafasy" },
   { name: "محمد صديق المنشاوي", sub: "مجوّد", icon: "mic", ed: "ar.muhammadsiddiqalminshawimujawwad" },
@@ -238,7 +249,9 @@ const RECITERS = [
   { name: "ياسر الدوسري", sub: "إمام المسجد الحرام", icon: "mic", ed: "ar.yasseraldossari" },
   { name: "إبراهيم الدوسري", sub: "تلاوة مرتلة", icon: "mic", ed: "ar.ibrahimaldossari" },
 ];
+
 const AUDIO_CDN = 'https://cdn.islamic.network/quran/audio-surah/128';
+const MQ_CDN = 'https://cdn.mp3quran.net/audio';
 
 /* ══════════════════════════════════════════════════════════════
    STATE
@@ -542,7 +555,7 @@ function setPlayerError(msg) {
 
 function loadAudio(reciterIdx, surahNum, autoplay) {
   const r = RECITERS[reciterIdx];
-  const url = `${AUDIO_CDN}/${r.ed}/${surahNum}.mp3`;
+  const url = r.mq ? `${MQ_CDN}/${r.mq}/${String(surahNum).padStart(3, '0')}.mp3` : `${AUDIO_CDN}/${r.ed}/${surahNum}.mp3`;
   setPlayerError('');
 
   if (!state.audio.element) {
@@ -550,18 +563,19 @@ function loadAudio(reciterIdx, surahNum, autoplay) {
     el.preload = 'none';
     el.addEventListener('timeupdate', onAudioTimeUpdate);
     el.addEventListener('ended', onAudioEnded);
+    el.addEventListener('loadedmetadata', onAudioTimeUpdate);
     el.addEventListener('error', () => {
       state.audio.playing = false;
       document.getElementById('playBtn').innerHTML = ICONS.play;
-      setPlayerError('تعذّر تحميل التلاوة. تحقق من الاتصال بالإنترنت أو جرّب قارئاً آخر.');
+      setPlayerError('تعذّر تحميل التلاوة. جرّب مرة أخرى أو اختر قارئاً آخر.');
     });
     state.audio.element = el;
   }
 
   const el = state.audio.element;
   el.src = url;
-  document.getElementById('playerTitle').textContent = `${r.name} — ${SURAHS_META[surahNum - 1]?.ar || ''}`;
-  document.getElementById('playerSub').textContent = r.sub;
+  document.getElementById('playerTitle').textContent = `سورة ${SURAHS_META[surahNum - 1]?.ar || ''}`;
+  document.getElementById('playerSub').textContent = `${r.name} · ${r.sub}`;
   if (autoplay) {
     el.play().then(() => {
       state.audio.playing = true;
@@ -580,6 +594,17 @@ function onAudioEnded() {
   state.audio.playing = false;
   document.getElementById('playBtn').innerHTML = ICONS.play;
   updateProgressUI(0, 0, 0);
+  if (state.audio.surahNum < 114) stepSurah(1);
+}
+
+function stepSurah(d) {
+  if (state.audio.reciter === null) { showToast('اختر قارئاً أولاً'); return; }
+  const n = state.audio.surahNum + d;
+  if (n < 1 || n > 114) return;
+  state.audio.surahNum = n;
+  document.getElementById('audioSurah').value = n;
+  stopAudio();
+  loadAudio(state.audio.reciter, n, true);
 }
 
 function togglePlay() {
@@ -623,7 +648,8 @@ function updateProgressUI(pct, current, total) {
   document.getElementById('progressFill').style.width = pct.toFixed(1) + '%';
   document.getElementById('progressTrack').setAttribute('aria-valuenow', Math.round(pct));
   const fmt = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
-  document.getElementById('playerTime').textContent = total ? `${fmt(current)} / ${fmt(total)}` : '';
+  document.getElementById('timeCur').textContent = fmt(current || 0);
+  document.getElementById('timeTot').textContent = total ? fmt(total) : '0:00';
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -713,5 +739,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Progress track click
-  document.getElementById('progressTrack')?.addEventListener('click', seekAudio);
+  const track = document.getElementById('progressTrack');
+  if (track) {
+    let dragging = false;
+    track.addEventListener('pointerdown', e => { dragging = true; track.setPointerCapture(e.pointerId); seekAudio(e); });
+    track.addEventListener('pointermove', e => { if (dragging) seekAudio(e); });
+    track.addEventListener('pointerup', () => { dragging = false; });
+    track.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') skipAudio(5); else if (e.key === 'ArrowRight') skipAudio(-5);
+    });
+  }
 });

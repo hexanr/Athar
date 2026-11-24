@@ -204,7 +204,7 @@
   <div class="audio-pick">
     <label for="audioSurah">اختر السورة</label>
     <select id="audioSurah" aria-label="السورة"></select>
-    <p>ثم اختر القارئ للبدء. التلاوات من خدمة islamic.network وتحتاج اتصالاً بالإنترنت.</p>
+    <p>ثم اختر القارئ للبدء.</p>
   </div>
 
   <div class="reciters-grid" id="recitersGrid"></div>
@@ -212,19 +212,22 @@
   <!-- Audio Player -->
   <div class="player-bar">
     <div class="player-top">
-      <div>
+      <div class="player-art"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="margin:0"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg></div>
+      <div class="player-meta">
         <div class="player-title" id="playerTitle">اختر قارئاً للبدء</div>
-        <div class="player-sub" id="playerSub">المكتبة الصوتية — أثر</div>
+        <div class="player-sub" id="playerSub">المكتبة الصوتية</div>
       </div>
-      <div class="player-time" id="playerTime"></div>
     </div>
-    <div class="progress-track" id="progressTrack" role="slider" aria-label="موضع التشغيل" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-track" id="progressTrack" role="slider" tabindex="0" aria-label="موضع التشغيل" aria-valuemin="0" aria-valuemax="100">
       <div class="progress-fill" id="progressFill" style="width:0%"></div>
     </div>
+    <div class="player-times"><span id="timeCur">0:00</span><span id="timeTot">0:00</span></div>
     <div class="player-controls">
+      <button class="pc-btn" onclick="stepSurah(-1)" title="السورة السابقة" aria-label="السورة السابقة"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="margin:0"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" x2="19" y1="5" y2="19"/></svg></button>
       <button class="pc-btn" onclick="skipAudio(-15)" title="١٥ ثانية للخلف" aria-label="١٥ ثانية للخلف"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="margin:0"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
       <button class="pc-btn play-btn" id="playBtn" onclick="togglePlay()" aria-label="تشغيل / إيقاف"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="fill:currentColor;margin:0"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5Z"/></svg></button>
       <button class="pc-btn" onclick="skipAudio(15)" title="١٥ ثانية للأمام" aria-label="١٥ ثانية للأمام"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="margin:0"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg></button>
+      <button class="pc-btn" onclick="stepSurah(1)" title="السورة التالية" aria-label="السورة التالية"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="margin:0"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"/><line x1="5" x2="5" y1="19" y2="5"/></svg></button>
     </div>
   </div>
 </div>
